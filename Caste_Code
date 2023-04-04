@@ -1,0 +1,25 @@
+#d0 = pd.DataFrame()
+dd1 = pd.DataFrame()
+os.chdir(caste+'CASTE ABS-224/')
+for filename in os.listdir():
+    os.chdir(caste+'CASTE ABS-224/')
+    d1 = pd.read_excel(filename)
+    col = d1.iloc[0:1,]
+    d1 = d1.iloc[2:,]
+    d1.columns = list(col.values)
+    col = d1.iloc[0:1,]
+    ##d1.iloc[:,[0,1,i]].head()
+    #print(d1.columns)
+    lis = d1.iloc[:,3:].columns
+    #print(lis)
+    for i in range(3,d1.shape[1]):
+      #print(d1.columns)
+      dd0 = d1.iloc[:,[0,1,i]]
+      dd0['Taluka'] = list(dd0.columns[2])[0]
+      dd0.columns = ['SL NO',	'CASTE NAME', 'Voters','Taluka']
+      dd0['AC_NAME'] = str(filename)[0:-5]
+      #print(dd0.columns)
+      #print(list(dd0.columns[i])[0])
+      #dd0.head(10)
+      dd1 = dd1.append(dd0,ignore_index= True) 
+      
