@@ -53,7 +53,13 @@ col2 = ['FAMILY SL. NO','DISTRICT CODE','TEHSIL CODE','TOWN CODE','WARD NO','BLO
         'SUB BLOCK NO','WARD NAME','BOOTH NO',
         'HEADOF HHD MOBILENO',
         'NAME OF THE HEAD OF THE HOUSE OLD AND MEMBERS','SE0 (MALE-1, FEMALE-2, THIRD GENDER-3)',
-        'RELIGION','CAST','CAST.1','COMPLETED AGE (YEARS)']        
+        'RELIGION','CAST','CAST.1','COMPLETED AGE (YEARS)'] 
+col3 = ['FAMILY SL. NO','DISTRICT CODE','TEHSIL CODE','TOWN CODE','WARD NO','BLOCKNO',
+        'SUB BLOCK NO','WARD NAME','BOOTH NO',
+        'HEADOF HHD MOBILENO',
+        'NAME OF THE HEAD OF THE HOUSE OLD AND MEMBERS','SEX (MALE-1, FEMALE-2, THIRD GENDER-3)',
+        'RELIGION','CASTE','CASTE.1','COMPLETED AGE (YEARS)']         
+
 for filename in os.listdir():
   lin = pd.DataFrame()
   vok = pd.DataFrame()
@@ -88,10 +94,10 @@ for filename in os.listdir():
           dw['MLA ASEMBALE'] = filename
           dw.to_csv("CSV/" + filename)
           lin,vok,mus,kur,edi = caste(dw,lin,vok,mus,kur,edi)
-          lin.to_excel("CasteWise_Dialing/Lin_"+filename)
-          vok.to_excel("CasteWise_Dialing/Vok_"+filename)
-          kur.to_excel("CasteWise_Dialing/Kur_"+filename)
-          edi.to_excel("CasteWise_Dialing/Edi_"+filename) 
+          lin.to_excel("CasteWise_Dialing/120+/Lin_"+filename)
+          vok.to_excel("CasteWise_Dialing/120+/Vok_"+filename)
+          kur.to_excel("CasteWise_Dialing/120+/Kur_"+filename)
+          edi.to_excel("CasteWise_Dialing/120+/Edi_"+filename) 
         except:
           print(filename)
           pass
