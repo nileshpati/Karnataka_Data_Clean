@@ -1,0 +1,98 @@
+from re import error
+###120++++Castewise Dialing Data####
+import warnings
+warnings.filterwarnings('ignore')
+def caste(d,lin,vok,mus,kur,edi):
+  d = d.sort_values(['HEADOF HHD MOBILENO','NAME OF THE HEAD OF THE HOUSE OLD AND MEMBERS','BOOTH NO'], ascending=[False,False, False])
+  d = d[d['HEADOF HHD MOBILENO'] != '-']
+  d = d[d['HEADOF HHD MOBILENO'] != 'X']
+  linga = ['LINGAYATH', 'LINGAYA', 'lingayatha']
+  vokka = ['VOKKALIGA']
+  muslim = ['MUSLIM']
+  kuruba = ['KURUBA']
+  ediga = ['EDIGA']
+  ##p1 = pd.read_excel('01-NIPPANI.xlsx', sheet = 1 )
+  ##df = p1
+  try:
+      lin = lin.append(d[d['CASTE.1'].str.contains('|'.join(linga))].head(100))
+      vok = vok.append(d[d['CASTE.1'].str.contains('|'.join(vokka))].head(100))
+      mus = mus.append(d[d['CASTE.1'].str.contains('|'.join(muslim))].head(100))
+      kur = kur.append(d[d['CASTE.1'].str.contains('|'.join(kuruba))].head(100))
+      edi = edi.append(d[d['CASTE.1'].str.contains('|'.join(ediga))].head(100))
+  except :
+     try:
+       lin = lin.append(d[d['CAST.1'].str.contains('|'.join(linga))].head(100))
+       vok = vok.append(d[d['CAST.1'].str.contains('|'.join(vokka))].head(100))
+       mus = mus.append(d[d['CAST.1'].str.contains('|'.join(muslim))].head(100))
+       kur = kur.append(d[d['CAST.1'].str.contains('|'.join(kuruba))].head(100))
+       edi = edi.append(d[d['CAST.1'].str.contains('|'.join(ediga))].head(100))
+     except: 
+       pass     
+  return (lin,vok,mus,kur,edi)
+
+os.chdir(dial)
+lin = pd.DataFrame()
+vok = pd.DataFrame()
+mus = pd.DataFrame()
+kur = pd.DataFrame()
+edi = pd.DataFrame()
+# orig = ['FAMILY SL. NO','DISTRICT CODE','TEHSIL CODE','TOWN CODE','WARD NO','BLOCKNO','SUB BLOCK NO','CHARGECENTRENO','WARD NAME','BOOTH NO','HOUSE OR DOORNO','CROSS AND NAME','LAYOUT AND COLONY',
+#         'HEADOF HHD MOBILENO','PIN CODE','ZILLA PANCHAYATH','MLA ASEMBALE','HOBLI NAME','SL.NO MEMBER','NAME OF THE HEAD OF THE HOUSE OLD AND MEMBERS','RELATION WITH THE HEAD OF THE HOUSE OLD',
+#         'RELATION WITH THE HEAD OF THE HOUSE OLD','SE0 (MALE-1, FEMALE-2, THIRD GENDER-3)','SE0 (MALE-1, FEMALE-2, THIRD GENDER-3)','RELIGION','RELIGION',
+#         'CASTE','CASTE.1','SUBCASTE','COMPLETED AGE (YEARS)','MOTHER TONGUE','MOTHER TONGUE','AADHAR NO','ELECATION COMMISSION IDENTITY CARD NO','DISABILITY','DISABILITY','MARITAL STATUS','MARITAL STATUS','AGE AT MARRIAGE','AGE AT THE TIME OF JOINING  SCHOOL','TYPE OF SCHOOL','EDUCATION DETAILS ','EDUCATION DETAILS ','STANDARD AT DROUPED OUT FORM  SCHOOL','AGE AT WHICH DISCONTINUED THIS SCHOOL','REASON FOR DROPOUT FROM SCHOOL',
+#         'REASON FOR NOTCONTINUING EDUCATION AMONG THOSE IN THE AGE GROUP OF 17 TO 40 YEARS','REASON FOR ILLITERATE','PRESENTLY WORKING','PRESENTLY WORKING','EMPLOYMENT DETAILS GOVT/PVT SECTORS (ON MONTHLY SALARY BASIC )','EMPLOYMENT DETAILS GOVT/PVT SECTORS (ON MONTHLY SALARY BASIC )',
+#         'PRESENT OCCUPATION','TRADITIONAL FAMILY OCCUPATION','TRADITIONAL FAMILY OCCUPATION','TRADITION OCCUPATION CONTINUED (YES-1 NO-2)','TRADITION OCCUPATION CONTINUED (YES-1 NO-2)','DISEASES DUETO OCCUPATION','DAILY VAGE WORKERS IN THE UN-ORGANISED SECTOR','ANNUAL INCOME','ANNUAL INCOME','INCOMETA0 PAYEE ( YES-1 NO-2)','INCOMETA0 PAYEE ( YES-1 NO-2)','DO YOU HAVE BANK ACCOUNT ( YES-1 NO-2)','DO YOU HAVE BANK ACCOUNT ( YES-1 NO-2)','EDUCATIONAL BENEFITS','JOB BENEFITS','CASTE CERTIFICATE ( YES-1 NO-2)','CASTE CERTIFICATE ( YES-1 NO-2)','NOMADIC TRIBES ( YES-1 NO-2)','NOMADIC TRIBES ( YES-1 NO-2)','PEOPLE REPRESENATIVE/OFFICE BEARER DETAILES','IF MEMBER/OFFICE BEARER IN CORPORATION-BOARD CO-OPERATIVE SOCIETY/ NON-GOVT. ORGANIZATION/ ASSOCIATIONS: DETAILS','DRY LAND','WET LAND','GARDEN LAND','PLANTATION LAND','OTHER LAND',
+#         'TOTAL LAND','HOUSE HOLD LOAN ','HOUSE HOLD LOAN ','ALLIED AGRICUTURAL ACTIVITIES','LIVESTOCK COW OXEN BUFFALO','LIVESTOCK SHEEP GOAT','LIVESTOCK POULTRYBIRDS DUCKS','LIVESTOCK PIGS','IMMOVABLE PROPERTY','MOVABLE PROPERTY','GOVT BENEFITS','RATIONCARD NO','NATURE OF DWELLINGAREA','OWNERSHIP STATUS','OWNERSHIP STATUS','TYPE OF DWELLING HOUSE AND ITS USAGE','OWN SITE','SOURCE OF DRINKING WATER ','SANITARY FACILITY','COOKING FUEL','LIGHTING SOURCE','RESPONDENT NAME','RESPONDENT MOBILENO']
+
+cols = ['FAMILY SL. NO','DISTRICT CODE','TEHSIL CODE','TOWN CODE','WARD NO','BLOCKNO',
+        'SUB BLOCK NO','WARD NAME','BOOTH NO',
+        'HEADOF HHD MOBILENO',
+        'NAME OF THE HEAD OF THE HOUSE OLD AND MEMBERS','SE0 (MALE-1, FEMALE-2, THIRD GENDER-3)',
+        'RELIGION','CASTE','CASTE.1','COMPLETED AGE (YEARS)']
+col2 = ['FAMILY SL. NO','DISTRICT CODE','TEHSIL CODE','TOWN CODE','WARD NO','BLOCKNO',
+        'SUB BLOCK NO','WARD NAME','BOOTH NO',
+        'HEADOF HHD MOBILENO',
+        'NAME OF THE HEAD OF THE HOUSE OLD AND MEMBERS','SE0 (MALE-1, FEMALE-2, THIRD GENDER-3)',
+        'RELIGION','CAST','CAST.1','COMPLETED AGE (YEARS)']        
+for filename in os.listdir():
+  lin = pd.DataFrame()
+  vok = pd.DataFrame()
+  mus = pd.DataFrame()
+  kur = pd.DataFrame()
+  edi = pd.DataFrame()
+  dw = pd.read_excel(filename)
+  d = dw
+  try:
+    #dw.columns = orig
+    dw = dw[cols]
+    dw['MLA ASEMBALE'] = filename
+    dw.to_csv("CSV/120+/" + filename+'.csv')
+    lin,vok,mus,kur,edi = caste(dw,lin,vok,mus,kur,edi)
+    lin.to_excel("CasteWise_Dialing/120+/Lin_"+filename)
+    vok.to_excel("CasteWise_Dialing/120+/Vok_"+filename)
+    kur.to_excel("CasteWise_Dialing/120+/Kur_"+filename)
+    edi.to_excel("CasteWise_Dialing/120+/Edi_"+filename)
+  except KeyError:
+      try:
+        dw = dw[col2]
+        dw['MLA ASEMBALE'] = filename
+        dw.to_csv("CSV/120+/" + filename)
+        lin,vok,mus,kur,edi = caste(dw,lin,vok,mus,kur,edi)
+        lin.to_excel("CasteWise_Dialing/120+/Lin_"+filename)
+        vok.to_excel("CasteWise_Dialing/120+/Vok_"+filename)
+        kur.to_excel("CasteWise_Dialing/120+/Kur_"+filename)
+        edi.to_excel("CasteWise_Dialing/120+/Edi_"+filename) 
+      except:
+        try:
+          dw = dw[col3]
+          dw['MLA ASEMBALE'] = filename
+          dw.to_csv("CSV/" + filename)
+          lin,vok,mus,kur,edi = caste(dw,lin,vok,mus,kur,edi)
+          lin.to_excel("CasteWise_Dialing/Lin_"+filename)
+          vok.to_excel("CasteWise_Dialing/Vok_"+filename)
+          kur.to_excel("CasteWise_Dialing/Kur_"+filename)
+          edi.to_excel("CasteWise_Dialing/Edi_"+filename) 
+        except:
+          print(filename)
+          pass
+  pass
